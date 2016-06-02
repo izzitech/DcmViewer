@@ -30,6 +30,9 @@ namespace DCMViewer
         private void ChangeContrast(int value)
         {
             // pictureBox1.Image = AdjustContrastCS(new Bitmap(foto), trackBar1.Value);
+            pictureBox1.Image = AdjustContrastCEX(new Bitmap(foto), trackBar1.Value);
+            GC.Collect();
+            // AdjustContrastC(new Bitmap(foto), trackBar1.Value);
         }
 
         // http://www.gutgames.com/
@@ -81,9 +84,37 @@ namespace DCMViewer
             return NewBitmap;
         }
 
+        // This is astonishing faster than chained for() statements.
+        public unsafe Bitmap AdjustContrastCEX(Bitmap bitmap, float value)
+        {
+            BitmapData bData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+            byte bitsPerPixel = (byte)Image.GetPixelFormatSize(bData.PixelFormat);
+            byte* scan0 = (byte*)bData.Scan0.ToPointer();
+            byte* color = scan0;
+            double finalContrast = 0;
+            long imageByteSize = bitmap.Height * bitmap.Width * (bitsPerPixel / 8);
+
+            value = (100.0f + value) / 100.0f;
+            value *= value;
+
+            for (int i = 0; i < imageByteSize; i++)
+            {
+                finalContrast = ((((*color / 255.0) - 0.5) * value) + 0.5) * 255;
+
+                if (finalContrast < 0) finalContrast = 0;
+                if (finalContrast > 255) finalContrast = 255;
+
+                *color = (byte)finalContrast;
+                color++;
+            }
+
+            bitmap.UnlockBits(bData);
+            return bitmap;
+        }
+
         public unsafe Bitmap AdjustContrastC(Bitmap bitmap, float value)
         {
-            BitmapData bData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+            BitmapData bData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
             byte* scan0 = (byte*)bData.Scan0.ToPointer();
             byte bitsPerPixel = (byte)Image.GetPixelFormatSize(bData.PixelFormat);
 
@@ -106,39 +137,70 @@ namespace DCMViewer
 
             //----
             // Procesamos **RGB** 8 bits por canal.
-            const int RGB = 16; //ImageFlags.ColorSpaceRgb
-            if ((bitmap.Flags & RGB) == RGB)
-            {
+            // const int RGB = 16; //ImageFlags.ColorSpaceRgb
+            //if ((bitmap.Flags & RGB) == RGB)
+            //{
                 // Set contrast value
                 value = (100.0f + value) / 100.0f;
                 value *= value;
 
-                for (int x = 0; x < bData.Width; ++x)
+            //int offset = bData.Stride - bitmap.Width * 3;
+            // int widthBytesSize = bitmap.Width * 4;
+
+            byte* pixel = scan0;
+            Random ran = new Random();
+            double result = 0;
+
+            for (int y = 0; y < bitmap.Height; y++)
                 {
-                    for (int y = 0; y < bData.Height; ++y)
+                    for (int x = 0; x < bitmap.Width * 4; x++)
                     {
-                        byte* pixel = scan0 + x + y * bitsPerPixel / 8;
-                        
-                        // Color Pixel = bitmap.GetPixel(x, y);
-                        float Red = Pixel.R / 255.0f;
-                        float Green = Pixel.G / 255.0f;
-                        float Blue = Pixel.B / 255.0f;
 
-                        Red = (((Red - 0.5f) * value) + 0.5f) * 255.0f;
-                        Green = (((Green - 0.5f) * value) + 0.5f) * 255.0f;
-                        Blue = (((Blue - 0.5f) * value) + 0.5f) * 255.0f;
+                    result = *pixel;
+                    result = result / 255.0;
+                    result -= 0.5;
+                    result *= value;
+                    result += 0.5;
+                    result *= 255;
+                    if (result < 0) result = 0;
+                    if (result > 255) result = 255;
+                    *pixel = (byte)result;
+                    pixel++;
+                    ////Blue
+                    //*pixel = (byte)ran.Next(0, 254);
+                    //pixel++;
+                    ////Green
+                    //pixel++;
+                    ////Red
+                    //pixel++;
+                    ////Alfa
+                    //pixel++;
 
-                        bitmap.SetPixel(x, y, Color.FromArgb(ClampInt((int)Red, 255, 0),
-                                                              ClampInt((int)Green, 255, 0),
-                                                              ClampInt((int)Blue, 0, 255)));
+                    //*pixel = (byte)150;
 
-                    }
+                    //// Color Pixel = bitmap.GetPixel(x, y);
+                    //float Red = Pixel.R / 255.0f;
+                    //float Green = Pixel.G / 255.0f;
+                    //float Blue = Pixel.B / 255.0f;
+
+                    //Red = (((Red - 0.5f) * value) + 0.5f) * 255.0f;
+                    //Green = (((Green - 0.5f) * value) + 0.5f) * 255.0f;
+                    //Blue = (((Blue - 0.5f) * value) + 0.5f) * 255.0f;
+
+                    //bitmap.SetPixel(x, y, Color.FromArgb(ClampInt((int)Red, 255, 0),
+                    //                                      ClampInt((int)Green, 255, 0),
+                    //                                      ClampInt((int)Blue, 0, 255)));
+
                 }
-            }
-            else
-            {
-                MessageBox.Show(String.Format("Todavía no hay soporte para este formato de color: {0}.", bitmap.Flags.ToString()));
-            }
+                //pixel += offset;
+                }
+
+            //}
+            //else
+            //{
+            //    MessageBox.Show(String.Format("Todavía no hay soporte para este formato de color: {0}.", bitmap.Flags.ToString()));
+            //}
+            bitmap.UnlockBits(bData);
             return bitmap;
         }
 
@@ -189,5 +251,10 @@ namespace DCMViewer
             return value;
         }
 
+        private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            pictureBox1.Image = AdjustContrastCEX(new Bitmap(foto), hScrollBar1.Value);
+            GC.Collect();
+        }
     }
 }
