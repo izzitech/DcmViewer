@@ -9,24 +9,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace DCMViewer
 {
     public partial class testingContrast1 : Form
     {
-        Image foto;
-        Bitmap _image;
+        Bitmap _originalImage;
+        Bitmap _shownImage;
+        bool newImage;
 
         public testingContrast1()
         {
             InitializeComponent();
-            foto = pictureBox1.Image;
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
+             
             ChangeContrast(trackBar1.Value);
-
         }
 
         // pictureBox1 time: 27
@@ -36,32 +37,38 @@ namespace DCMViewer
         // AdjustContrastCEX RETURN time: 16
         // AdjustContrastCEX for loop time: 26
 
+        // http://what-when-how.com/embedded-image-processing-on-the-tms320c6000-dsp/windowlevel-image-processing-part-1/
         private void ChangeContrast(int value)
         {
             // pictureBox1.Image = AdjustContrastCS(new Bitmap(foto), trackBar1.Value);
             Stopwatch watchdog = new Stopwatch();
-            watchdog.Start();
-            pictureBox1.Image = AdjustContrastCEX(new Bitmap(foto), trackBar1.Value);
-            GC.Collect();
-            watchdog.Stop();
-            Console.WriteLine("AdjustContrastCEX + pictureBox1 time: " + watchdog.ElapsedMilliseconds);
-            // AdjustContrastC(new Bitmap(foto), trackBar1.Value);
+            //watchdog.Start();
+            //pictureBox1.Image = AdjustContrastCEX(_originalImage, trackBar1.Value);
+            //GC.Collect();
+            //watchdog.Stop();
+            //Console.WriteLine("AdjustContrastCEX + pictureBox1 time: " + watchdog.ElapsedMilliseconds);
+            //// AdjustContrastC(new Bitmap(foto), trackBar1.Value);
 
-            Stopwatch watchdog_2 = new Stopwatch();
-            watchdog_2.Start();
-            AdjustContrastCEX(new Bitmap(foto), trackBar1.Value);
-            GC.Collect();
-            watchdog_2.Stop();
-            Console.WriteLine("AdjustContrastCEX time: " + watchdog_2.ElapsedMilliseconds);
+            //Stopwatch watchdog_2 = new Stopwatch();
+            //watchdog_2.Start();
+            //AdjustContrastCEX(_originalImage, trackBar1.Value);
+            //GC.Collect();
+            //watchdog_2.Stop();
+            //Console.WriteLine("AdjustContrastCEX time: " + watchdog_2.ElapsedMilliseconds);
 
             Stopwatch watchdog_3 = new Stopwatch();
             watchdog_3.Start();
-            Console.WriteLine("Watchdog 3 started: " + watchdog_3.ElapsedMilliseconds);
-            _image = new Bitmap(pictureBox1.Image);
-            Console.WriteLine("Copy pic time: " + watchdog_3.ElapsedMilliseconds);
+            Console.WriteLine("Watchdog 3 started.");
+
+            //Thread adjCont = new Thread(new ThreadStart(AdjustContrastCEX3));
+            //adjCont.Start();
             AdjustContrastCEX2(trackBar1.Value);
+            pictureBox1.Image = _shownImage;
+
+            //pictureBox1.Image = AdjustContrastCEX1(trackBar1.Value);
+
             watchdog_3.Stop();
-            Console.WriteLine("AdjustContrastCEX2 time: " + watchdog_3.ElapsedMilliseconds);
+            Console.WriteLine("AdjustContrastCEX2 time: " + watchdog_3.ElapsedMilliseconds + " / " + watchdog_3.ElapsedTicks + " ticks.");
         }
 
         // http://www.gutgames.com/
@@ -145,15 +152,16 @@ namespace DCMViewer
             bitmap.UnlockBits(bData);
             return bitmap;
         }
-
-        public unsafe void AdjustContrastCEX2(float value)
+        public unsafe Bitmap AdjustContrastCEX1(float value)
         {
-            BitmapData bData = _image.LockBits(new Rectangle(0, 0, _image.Width, _image.Height), ImageLockMode.ReadWrite, _image.PixelFormat);
+            Bitmap image = new Bitmap(pictureBox1.Image);
+
+            BitmapData bData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, image.PixelFormat);
             byte bitsPerPixel = (byte)Image.GetPixelFormatSize(bData.PixelFormat);
             byte* scan0 = (byte*)bData.Scan0.ToPointer();
             byte* color = scan0;
             float finalContrast = 0; // float 32 vs double 64: double +10ms 
-            long imageByteSize = _image.Height * _image.Width * (bitsPerPixel / 8);
+            long imageByteSize = bData.Height * bData.Width * (bitsPerPixel / 8);
 
             value = (100.0f + value) / 100.0f;
             value *= value;
@@ -171,8 +179,123 @@ namespace DCMViewer
                 *color = (byte)finalContrast;
                 ++color;
             }
-            Console.WriteLine("CEX2 for loop time: " + watchdog.ElapsedMilliseconds);
-            _image.UnlockBits(bData);
+            Console.WriteLine("CEX1 for loop time: " + watchdog.ElapsedMilliseconds + " / " + watchdog.ElapsedTicks + " ticks.");
+            image.UnlockBits(bData);
+            return image;
+        }
+
+        public unsafe void AdjustContrastCEX2(float value)
+        {
+            BitmapData bDataSource = _originalImage.LockBits(new Rectangle(0, 0, _originalImage.Width, _originalImage.Height), ImageLockMode.ReadOnly, _originalImage.PixelFormat);
+            _shownImage = new Bitmap(_originalImage.Width, _originalImage.Height, _originalImage.PixelFormat);
+            BitmapData bDataDest = _shownImage.LockBits(new Rectangle(0, 0, _originalImage.Width, _originalImage.Height), ImageLockMode.ReadWrite, _originalImage.PixelFormat);
+            byte bitsPerPixel = (byte)Image.GetPixelFormatSize(bDataSource.PixelFormat);
+            byte* scan0Source = (byte*)bDataSource.Scan0.ToPointer();
+            byte* scan0Dest = (byte*)bDataDest.Scan0.ToPointer();
+            byte* colorSource = scan0Source;
+            byte* colorDest = scan0Dest;
+            float finalContrast = 0; // float 32 vs double 64: double +10ms 
+            long imageByteSize = bDataSource.Height * bDataSource.Width * (bitsPerPixel / 8);
+
+            value = (100.0f + value) / 100.0f;
+            value *= value;
+
+            Stopwatch watchdog = new Stopwatch();
+            watchdog.Start();
+
+            for (int i = 0; i < imageByteSize; ++i)
+            {
+                finalContrast = ((((*colorSource / 255.0f) - 0.5f) * value) + 0.5f) * 255;
+
+                if (finalContrast < 0) finalContrast = 0;
+                if (finalContrast > 255) finalContrast = 255;
+
+                *colorDest = (byte)finalContrast;
+                ++colorSource;
+                ++colorDest;
+            }
+            Console.WriteLine("CEX2 for loop time: " + watchdog.ElapsedMilliseconds + " / " + watchdog.ElapsedTicks + " ticks.");
+            _originalImage.UnlockBits(bDataSource);
+            _shownImage.UnlockBits(bDataDest);
+        }
+
+        public unsafe void AdjustContrastCEX2b(float contrast, float brigth)
+        {
+            BitmapData bDataSource = _originalImage.LockBits(new Rectangle(0, 0, _originalImage.Width, _originalImage.Height), ImageLockMode.ReadOnly, _originalImage.PixelFormat);
+            _shownImage = new Bitmap(_originalImage.Width, _originalImage.Height, _originalImage.PixelFormat);
+            BitmapData bDataDest = _shownImage.LockBits(new Rectangle(0, 0, _originalImage.Width, _originalImage.Height), ImageLockMode.ReadWrite, _originalImage.PixelFormat);
+            byte bitsPerPixel = (byte)Image.GetPixelFormatSize(bDataSource.PixelFormat);
+            byte* scan0Source = (byte*)bDataSource.Scan0.ToPointer();
+            byte* scan0Dest = (byte*)bDataDest.Scan0.ToPointer();
+            byte* colorSource = scan0Source;
+            byte* colorDest = scan0Dest;
+            float finalContrast = 0; // float 32 vs double 64: double +10ms 
+            long imageByteSize = bDataSource.Height * bDataSource.Width * (bitsPerPixel / 8);
+
+            contrast = (100.0f + contrast) / 100.0f;
+            contrast *= contrast;
+
+            brigth = (brigth / 100.0f);
+
+            Stopwatch watchdog = new Stopwatch();
+            watchdog.Start();
+
+            for (int i = 0; i < imageByteSize; ++i)
+            {
+                finalContrast = ((((*colorSource / 255.0f) - 0.5f) * contrast) + 0.5f) * 255;
+
+                finalContrast = finalContrast + (brigth * 255);
+
+                if (finalContrast < 0) finalContrast = 0;
+                if (finalContrast > 255) finalContrast = 255;
+
+                *colorDest = (byte)finalContrast;
+                ++colorSource;
+                ++colorDest;
+            }
+            Console.WriteLine("CEX2 for loop time: " + watchdog.ElapsedMilliseconds + " / " + watchdog.ElapsedTicks + " ticks.");
+            _originalImage.UnlockBits(bDataSource);
+            _shownImage.UnlockBits(bDataDest);
+        }
+
+        public unsafe void AdjustContrastCEX3()
+        {
+            float value = 0;
+            this.Invoke((MethodInvoker)delegate { value = trackBar1.Value; });
+            BitmapData bDataSource = _originalImage.LockBits(new Rectangle(0, 0, _originalImage.Width, _originalImage.Height), ImageLockMode.ReadOnly, _originalImage.PixelFormat);
+            _shownImage = new Bitmap(_originalImage.Width, _originalImage.Height, _originalImage.PixelFormat);
+            BitmapData bDataDest = _shownImage.LockBits(new Rectangle(0, 0, _originalImage.Width, _originalImage.Height), ImageLockMode.ReadWrite, _originalImage.PixelFormat);
+            byte bitsPerPixel = (byte)Image.GetPixelFormatSize(bDataSource.PixelFormat);
+            byte* scan0Source = (byte*)bDataSource.Scan0.ToPointer();
+            byte* scan0Dest = (byte*)bDataDest.Scan0.ToPointer();
+            byte* colorSource = scan0Source;
+            byte* colorDest = scan0Dest;
+            float finalContrast = 0; // float 32 vs double 64: double +10ms 
+            long imageByteSize = bDataSource.Height * bDataSource.Width * (bitsPerPixel / 8);
+
+            value = (100.0f + value) / 100.0f;
+            value *= value;
+
+            Stopwatch watchdog = new Stopwatch();
+            watchdog.Start();
+
+            for (int i = 0; i < imageByteSize; ++i)
+            {
+                finalContrast = ((((*colorSource / 255.0f) - 0.5f) * value) + 0.5f) * 255;
+
+                if (finalContrast < 0) finalContrast = 0;
+                if (finalContrast > 255) finalContrast = 255;
+
+                *colorDest = (byte)finalContrast;
+                ++colorSource;
+                ++colorDest;
+            }
+            Console.WriteLine("CEX2 for loop time: " + watchdog.ElapsedMilliseconds + " / " + watchdog.ElapsedTicks + " ticks.");
+            _originalImage.UnlockBits(bDataSource);
+            _shownImage.UnlockBits(bDataDest);
+            newImage = true;
+
+            this.Invoke((MethodInvoker)delegate { pictureBox1.Image = _originalImage; });
         }
 
         public unsafe Bitmap AdjustContrastC(Bitmap bitmap, float value)
@@ -316,8 +439,24 @@ namespace DCMViewer
 
         private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
-            pictureBox1.Image = AdjustContrastCEX(new Bitmap(foto), hScrollBar1.Value);
-            GC.Collect();
+            ChangeContrast(e.NewValue);
+        }
+
+        private void btnOpen_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofg = new OpenFileDialog())
+            {
+                if (ofg.ShowDialog() == DialogResult.OK)
+                {
+                    _originalImage = new Bitmap(ofg.FileName);
+                }
+            }
+            pictureBox1.Image = _originalImage;
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            
         }
     }
 }

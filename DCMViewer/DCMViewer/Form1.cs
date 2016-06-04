@@ -22,5 +22,23 @@ namespace DCMViewer
             testingContrast1 tc1 = new testingContrast1();
             tc1.ShowDialog();
         }
+
+        private void btnMIR_Click(object sender, EventArgs e)
+        {
+            MultipleImageRepresentation mir = new MultipleImageRepresentation();
+            mir.ShowDialog();
+        }
+
+        private void btnTouchResponse_Click(object sender, EventArgs e)
+        {
+            TouchResponse tr = new TouchResponse();
+            tr.ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            TouchBrightnessAndContrast tbc = new TouchBrightnessAndContrast();
+            tbc.ShowDialog();
+        }
     }
 }

@@ -55,6 +55,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="MultipleImageRepresentation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MultipleImageRepresentation.Designer.cs">
+      <DependentUpon>MultipleImageRepresentation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="testingContrast1.cs">
@@ -63,8 +69,23 @@
     <Compile Include="testingContrast1.Designer.cs">
       <DependentUpon>testingContrast1.cs</DependentUpon>
     </Compile>
+    <Compile Include="TouchBrightnessAndContrast.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TouchBrightnessAndContrast.Designer.cs">
+      <DependentUpon>TouchBrightnessAndContrast.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TouchResponse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TouchResponse.Designer.cs">
+      <DependentUpon>TouchResponse.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MultipleImageRepresentation.resx">
+      <DependentUpon>MultipleImageRepresentation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -78,6 +99,12 @@
     </Compile>
     <EmbeddedResource Include="testingContrast1.resx">
       <DependentUpon>testingContrast1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TouchBrightnessAndContrast.resx">
+      <DependentUpon>TouchBrightnessAndContrast.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TouchResponse.resx">
+      <DependentUpon>TouchResponse.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -94,6 +121,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\oto.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1fff5f56840d1db7b66e94b5a7ec79db.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
