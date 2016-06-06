@@ -18,16 +18,12 @@ namespace DCMViewer
         Bitmap _originalImage;
         Bitmap _shownImage;
         bool newImage;
+        float contrast;
+        float brightness;
 
         public testingContrast1()
         {
             InitializeComponent();
-        }
-
-        private void trackBar1_Scroll(object sender, EventArgs e)
-        {
-             
-            ChangeContrast(trackBar1.Value);
         }
 
         // pictureBox1 time: 27
@@ -62,7 +58,7 @@ namespace DCMViewer
 
             //Thread adjCont = new Thread(new ThreadStart(AdjustContrastCEX3));
             //adjCont.Start();
-            AdjustContrastCEX2(trackBar1.Value);
+            AdjustContrastCEX2b(contrast, brightness);
             pictureBox1.Image = _shownImage;
 
             //pictureBox1.Image = AdjustContrastCEX1(trackBar1.Value);
@@ -197,7 +193,7 @@ namespace DCMViewer
             float finalContrast = 0; // float 32 vs double 64: double +10ms 
             long imageByteSize = bDataSource.Height * bDataSource.Width * (bitsPerPixel / 8);
 
-            value = (100.0f + value) / 100.0f;
+            value = (200.0f + value) / 200.0f;
             value *= value;
 
             Stopwatch watchdog = new Stopwatch();
@@ -232,10 +228,10 @@ namespace DCMViewer
             float finalContrast = 0; // float 32 vs double 64: double +10ms 
             long imageByteSize = bDataSource.Height * bDataSource.Width * (bitsPerPixel / 8);
 
-            contrast = (100.0f + contrast) / 100.0f;
+            contrast = (200.0f + contrast) / 200.0f;
             contrast *= contrast;
 
-            brigth = (brigth / 100.0f);
+            brigth = (100 + brigth) / 100.0f;
 
             Stopwatch watchdog = new Stopwatch();
             watchdog.Start();
@@ -243,8 +239,7 @@ namespace DCMViewer
             for (int i = 0; i < imageByteSize; ++i)
             {
                 finalContrast = ((((*colorSource / 255.0f) - 0.5f) * contrast) + 0.5f) * 255;
-
-                finalContrast = finalContrast + (brigth * 255);
+                finalContrast = finalContrast * brigth;
 
                 if (finalContrast < 0) finalContrast = 0;
                 if (finalContrast > 255) finalContrast = 255;
@@ -437,11 +432,6 @@ namespace DCMViewer
             return value;
         }
 
-        private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
-        {
-            ChangeContrast(e.NewValue);
-        }
-
         private void btnOpen_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofg = new OpenFileDialog())
@@ -454,9 +444,18 @@ namespace DCMViewer
             pictureBox1.Image = _originalImage;
         }
 
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            contrast = trackBar1.Value;
+            label8.Text = contrast.ToString();
+            ChangeContrast(0);
+        }
+
         private void trackBar2_Scroll(object sender, EventArgs e)
         {
-            
+            brightness = trackBar2.Value;
+            label7.Text = brightness.ToString();
+            ChangeContrast(0);
         }
     }
 }

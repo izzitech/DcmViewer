@@ -40,5 +40,11 @@ namespace DCMViewer
             TouchBrightnessAndContrast tbc = new TouchBrightnessAndContrast();
             tbc.ShowDialog();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            GDI_Testing gdit = new GDI_Testing();
+            gdit.ShowDialog();
+        }
     }
 }

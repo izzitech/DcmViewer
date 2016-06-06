@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MultipleImageRepresentation));
             this.image2 = new System.Windows.Forms.PictureBox();
             this.image5 = new System.Windows.Forms.PictureBox();
             this.image3 = new System.Windows.Forms.PictureBox();
@@ -118,6 +119,7 @@
             this.Controls.Add(this.image3);
             this.Controls.Add(this.image5);
             this.Controls.Add(this.image2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MultipleImageRepresentation";
             this.Text = "MultipleImageRepresentation";
             ((System.ComponentModel.ISupportInitialize)(this.image2)).EndInit();
