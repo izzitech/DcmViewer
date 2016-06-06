@@ -46,5 +46,20 @@ namespace DCMViewer
             GDI_Testing gdit = new GDI_Testing();
             gdit.ShowDialog();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            US_Loader_TouchBrightnessContrast ultbc = new US_Loader_TouchBrightnessContrast();
+            ultbc.ShowDialog();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            ClickableBorderNumberPic.ClickableBorderNumberPic cbnp = new ClickableBorderNumberPic.ClickableBorderNumberPic();
+            cbnp.Parent = flowLayoutPanel1;
+            cbnp.borderSize = 2;
+            cbnp.Create(200, 130);
+            
+        }
     }
 }

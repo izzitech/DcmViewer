@@ -31,11 +31,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.btnTouchResponse = new System.Windows.Forms.Button();
             this.btnMIR = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,6 +64,16 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "tools";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(6, 251);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(167, 44);
+            this.button4.TabIndex = 5;
+            this.button4.Text = "US Loader w/ touchable brightness-contrast";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
             // 
@@ -104,25 +115,24 @@
             this.btnMIR.UseVisualStyleBackColor = true;
             this.btnMIR.Click += new System.EventHandler(this.btnMIR_Click);
             // 
-            // button4
+            // flowLayoutPanel1
             // 
-            this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(6, 251);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(167, 44);
-            this.button4.TabIndex = 5;
-            this.button4.Text = "Touch Brightness / Contrast 2";
-            this.button4.UseVisualStyleBackColor = true;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 12);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(258, 168);
+            this.flowLayoutPanel1.TabIndex = 2;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(866, 339);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "MainTestTool";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -137,6 +147,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
 

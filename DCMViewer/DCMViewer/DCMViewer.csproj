@@ -38,6 +38,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClickableBorderNumberPic">
+      <HintPath>..\..\..\ClickableBorderNumberPic\ClickableBorderNumberPic\bin\Release\ClickableBorderNumberPic.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -89,6 +92,12 @@
     <Compile Include="TouchResponse.Designer.cs">
       <DependentUpon>TouchResponse.cs</DependentUpon>
     </Compile>
+    <Compile Include="US_Loader_TouchBrightnessContrast.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="US_Loader_TouchBrightnessContrast.Designer.cs">
+      <DependentUpon>US_Loader_TouchBrightnessContrast.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -116,6 +125,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TouchResponse.resx">
       <DependentUpon>TouchResponse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="US_Loader_TouchBrightnessContrast.resx">
+      <DependentUpon>US_Loader_TouchBrightnessContrast.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
