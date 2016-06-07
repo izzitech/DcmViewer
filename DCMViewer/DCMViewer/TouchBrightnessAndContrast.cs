@@ -87,6 +87,10 @@ namespace DCMViewer
                 ComputeFieldValues(e.X, e.Y, maxX, maxY);
                 AdjustContrast();
                 pictureBox1.Image = _shownBitmap;
+                if (_sourceBitmap.PixelFormat == PixelFormat.Format8bppIndexed && checkBox1.Checked == false)
+                {
+                    pictureBox1.Image.Palette = _sourceBitmap.Palette;
+                }
                 pictureBox1.Refresh();
                 sw.Stop();
                 System.Diagnostics.Debug.WriteLine("Showtime: " + sw.ElapsedMilliseconds + "ms.");
@@ -99,6 +103,8 @@ namespace DCMViewer
             _shownBitmap = new Bitmap(_sourceBitmap.Width, _sourceBitmap.Height, _sourceBitmap.PixelFormat);
             BitmapData bDataDest = _shownBitmap.LockBits(new Rectangle(0, 0, _sourceBitmap.Width, _sourceBitmap.Height), ImageLockMode.ReadWrite, _sourceBitmap.PixelFormat);
             byte bitsPerPixel = (byte)Image.GetPixelFormatSize(bDataSource.PixelFormat);
+            label17.Text = bitsPerPixel.ToString();
+
             byte* scan0Source = (byte*)bDataSource.Scan0.ToPointer();
             byte* scan0Dest = (byte*)bDataDest.Scan0.ToPointer();
             byte* colorSource = scan0Source;
@@ -128,8 +134,20 @@ namespace DCMViewer
             }
 
             Console.WriteLine("AdjContrast for-loop time: " + watchdog.ElapsedMilliseconds + " / " + watchdog.ElapsedTicks + " ticks.");
+            label19.Text = watchdog.ElapsedMilliseconds.ToString();
+
             _sourceBitmap.UnlockBits(bDataSource);
             _shownBitmap.UnlockBits(bDataDest);
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -32,7 +32,7 @@ namespace DCMViewer
             string[] pics;
 
 
-            pics = Directory.GetFiles("./pics", textBox1.Text + "*.jpg");
+            pics = Directory.GetFiles("./us", textBox1.Text + "*.jpg");
             Console.WriteLine(String.Format("Found: {0} images.", pics.Length));
 
             image1.Image = new Bitmap(pics[1]);

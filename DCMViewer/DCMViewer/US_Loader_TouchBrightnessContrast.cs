@@ -16,28 +16,33 @@ namespace DCMViewer
         public US_Loader_TouchBrightnessContrast()
         {
             InitializeComponent();
-            int howManyPics = 5;
+            int howManyPics = 6;
 
             ClickableBorderNumberPic.ClickableBorderNumberPic cbnp;
             for (int i = 0; i < howManyPics; ++i)
             {
                 cbnp = new ClickableBorderNumberPic.ClickableBorderNumberPic();
                 cbnp.Parent = flowLayoutPanel1;
-                cbnp.borderSize = 2;
-                cbnp.value = i;
+                cbnp.id = i + 1;
                 cbnp.status = true;
-                cbnp.Create(200, 130);
+                cbnp.imagePath = @".\us\18000000_00" + (i+1) + ".jpg";
+                cbnp.Create();
                 clickablePicBoxList.Add(cbnp);
             }
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            clickablePicBoxList[2].changeValue(clickablePicBoxList[2].value += 1);
+            clickablePicBoxList[2].changeID(clickablePicBoxList[2].id += 1);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            clickablePicBoxList[2].changeValue(clickablePicBoxList[2].value -= 1);
+            clickablePicBoxList[2].changeID(clickablePicBoxList[2].id -= 1);
+        }
+
+        private void picOnClick(object sender, EventArgs e)
+        {
+            ((ClickableBorderNumberPic.ClickableBorderNumberPic)sender).changeStatus(!((ClickableBorderNumberPic.ClickableBorderNumberPic)sender).status);
         }
     }
 }

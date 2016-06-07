@@ -57,8 +57,8 @@ namespace DCMViewer
         {
             ClickableBorderNumberPic.ClickableBorderNumberPic cbnp = new ClickableBorderNumberPic.ClickableBorderNumberPic();
             cbnp.Parent = flowLayoutPanel1;
-            cbnp.borderSize = 2;
-            cbnp.Create(200, 130);
+            cbnp.imagePath = @".\testing\wallpaper.jpg";
+            cbnp.Create();
             
         }
     }
