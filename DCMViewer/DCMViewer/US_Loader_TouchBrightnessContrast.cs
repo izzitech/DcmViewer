@@ -1,48 +1,74 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+using PictureFrameControl;
+using System.IO;
+using System.Drawing;
 
 namespace DCMViewer
 {
     public partial class US_Loader_TouchBrightnessContrast : Form
     {
-        List<ClickableBorderNumberPic.ClickableBorderNumberPic> clickablePicBoxList = new List<ClickableBorderNumberPic.ClickableBorderNumberPic>();
+        int howManyPics = 6;
+        Bitmap[] bmp = null;
 
         public US_Loader_TouchBrightnessContrast()
         {
             InitializeComponent();
-            int howManyPics = 6;
+        }
 
-            ClickableBorderNumberPic.ClickableBorderNumberPic cbnp;
+        private void US_Loader_TouchBrightnessContrast_Shown(object sender, EventArgs e)
+        {
+            bmp = new Bitmap[howManyPics];
+            PictureFrame[] pictureFrames = new PictureFrame[howManyPics]; 
+            string filenameTemplate = @".\us\18000000_00{0}.jpg";
+            string fullPath = "";
+
+            progressBar1.Visible = true; // aestethic detail.
             for (int i = 0; i < howManyPics; ++i)
             {
-                cbnp = new ClickableBorderNumberPic.ClickableBorderNumberPic();
-                cbnp.Parent = flowLayoutPanel1;
-                cbnp.id = i + 1;
-                cbnp.status = true;
-                cbnp.imagePath = @".\us\18000000_00" + (i+1) + ".jpg";
-                cbnp.Create();
-                clickablePicBoxList.Add(cbnp);
+                // Load pictures in RAM.
+                fullPath = String.Format(filenameTemplate, (i + 1).ToString());
+                bmp[i] = new Bitmap(fullPath);
+                progressBar1.Value = progressBar1.Maximum * (i + 1) / howManyPics;
+
+                // Show pictures in PictureFrames custom controls.
+                pictureFrames[i] = new PictureFrame();
+                pictureFrames[i].id = i + 1;
+                pictureFrames[i].borderSize = 3;
+                pictureFrames[i].status = true;
+                pictureFrames[i].pictureBox.Image = bmp[i];
+                pictureFrames[i].pictureBox.MouseDown += MouseDownEvent;
+                pictureFrames[i].numberShown.MouseDown += MouseDownEvent;
+                pictureFrames[i].MouseDown += MouseDownEvent;
+                pictureFrames[i].Create();
+                flowLayoutPanel1.Controls.Add(pictureFrames[i]);
+                this.Refresh();
             }
-        }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            clickablePicBoxList[2].changeID(clickablePicBoxList[2].id += 1);
+
+            pictureBox1.Image = bmp[0];
+
+            // aestethic detail.
+            progressBar1.Value = 0;
+            progressBar1.Visible = false; 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void MouseDownEvent(object sender, MouseEventArgs e)
         {
-            clickablePicBoxList[2].changeID(clickablePicBoxList[2].id -= 1);
-        }
-
-        private void picOnClick(object sender, EventArgs e)
-        {
-            ((ClickableBorderNumberPic.ClickableBorderNumberPic)sender).changeStatus(!((ClickableBorderNumberPic.ClickableBorderNumberPic)sender).status);
+            if (e.Button == MouseButtons.Left)
+            {
+                if (sender is PictureFrame)
+                {
+                    pictureBox1.Image = bmp[((PictureFrame)sender).id - 1];
+                }
+                if (sender is PictureBox)
+                {
+                    pictureBox1.Image = bmp[((PictureFrame)((PictureBox)sender).Parent).id - 1];
+                }
+                if (sender is Label)
+                {
+                    pictureBox1.Image = bmp[((PictureFrame)((Label)sender).Parent).id - 1];
+                }
+            }
         }
     }
 }

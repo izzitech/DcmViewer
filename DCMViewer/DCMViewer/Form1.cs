@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PictureFrameControl;
 
 namespace DCMViewer
 {
@@ -55,11 +56,7 @@ namespace DCMViewer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ClickableBorderNumberPic.ClickableBorderNumberPic cbnp = new ClickableBorderNumberPic.ClickableBorderNumberPic();
-            cbnp.Parent = flowLayoutPanel1;
-            cbnp.imagePath = @".\testing\wallpaper.jpg";
-            cbnp.Create();
-            
+
         }
     }
 }

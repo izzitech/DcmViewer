@@ -245,7 +245,6 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Commands";
-            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
             // btnOpen
             // 
@@ -283,7 +282,6 @@
             this.checkBox1.TabIndex = 1;
             this.checkBox1.Text = "US Psychoo!!";
             this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // label19
             // 

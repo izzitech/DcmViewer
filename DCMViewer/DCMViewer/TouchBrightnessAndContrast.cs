@@ -139,15 +139,5 @@ namespace DCMViewer
             _sourceBitmap.UnlockBits(bDataSource);
             _shownBitmap.UnlockBits(bDataDest);
         }
-
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
