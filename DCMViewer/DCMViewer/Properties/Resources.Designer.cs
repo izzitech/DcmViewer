@@ -63,6 +63,16 @@ namespace DCMViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _18000000_006 {
+            get {
+                object obj = ResourceManager.GetObject("18000000_006", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap _1fff5f56840d1db7b66e94b5a7ec79db {
             get {
                 object obj = ResourceManager.GetObject("1fff5f56840d1db7b66e94b5a7ec79db", resourceCulture);

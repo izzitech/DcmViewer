@@ -121,10 +121,13 @@
   <data name="1fff5f56840d1db7b66e94b5a7ec79db" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\1fff5f56840d1db7b66e94b5a7ec79db.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="rami" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rami.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="oto" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\oto.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="rami" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\rami.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="18000000_006" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Release\us\18000000_006.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

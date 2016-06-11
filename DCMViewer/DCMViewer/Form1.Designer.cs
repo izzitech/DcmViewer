@@ -31,12 +31,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.btnTouchResponse = new System.Windows.Forms.Button();
             this.btnMIR = new System.Windows.Forms.Button();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,32 +53,22 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button4);
+            this.groupBox1.Controls.Add(this.button5);
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.btnTouchResponse);
             this.groupBox1.Controls.Add(this.btnMIR);
             this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Location = new System.Drawing.Point(581, 12);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(273, 315);
+            this.groupBox1.Size = new System.Drawing.Size(707, 129);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "tools";
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(6, 251);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(167, 44);
-            this.button4.TabIndex = 5;
-            this.button4.Text = "US Loader w/ touchable brightness-contrast";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.groupBox1.Text = "Testing tools";
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(6, 155);
+            this.button3.Location = new System.Drawing.Point(372, 18);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(116, 40);
             this.button3.TabIndex = 4;
@@ -87,9 +78,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(6, 201);
+            this.button2.Location = new System.Drawing.Point(494, 19);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(167, 44);
+            this.button2.Size = new System.Drawing.Size(178, 39);
             this.button2.TabIndex = 3;
             this.button2.Text = "Touch Brightness / Contrast";
             this.button2.UseVisualStyleBackColor = true;
@@ -97,7 +88,7 @@
             // 
             // btnTouchResponse
             // 
-            this.btnTouchResponse.Location = new System.Drawing.Point(6, 109);
+            this.btnTouchResponse.Location = new System.Drawing.Point(250, 19);
             this.btnTouchResponse.Name = "btnTouchResponse";
             this.btnTouchResponse.Size = new System.Drawing.Size(116, 40);
             this.btnTouchResponse.TabIndex = 2;
@@ -107,7 +98,7 @@
             // 
             // btnMIR
             // 
-            this.btnMIR.Location = new System.Drawing.Point(6, 64);
+            this.btnMIR.Location = new System.Drawing.Point(128, 19);
             this.btnMIR.Name = "btnMIR";
             this.btnMIR.Size = new System.Drawing.Size(116, 39);
             this.btnMIR.TabIndex = 1;
@@ -115,19 +106,49 @@
             this.btnMIR.UseVisualStyleBackColor = true;
             this.btnMIR.Click += new System.EventHandler(this.btnMIR_Click);
             // 
-            // flowLayoutPanel1
+            // label1
             // 
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 12);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(258, 168);
-            this.flowLayoutPanel1.TabIndex = 2;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(45, 440);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(648, 24);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Note: This program is not certified for medical diagnostic... yet.";
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.Red;
+            this.button4.BackgroundImage = global::DCMViewer.Properties.Resources._18000000_006;
+            this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.ForeColor = System.Drawing.Color.White;
+            this.button4.Location = new System.Drawing.Point(250, 205);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(250, 170);
+            this.button4.TabIndex = 5;
+            this.button4.Text = "Ultrasound Dicom Viewer";
+            this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(6, 74);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(116, 40);
+            this.button5.TabIndex = 5;
+            this.button5.Text = "DICOM Test 1";
+            this.button5.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(866, 339);
-            this.Controls.Add(this.flowLayoutPanel1);
+            this.ClientSize = new System.Drawing.Size(725, 484);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
@@ -135,6 +156,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -147,7 +169,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button5;
     }
 }
 
