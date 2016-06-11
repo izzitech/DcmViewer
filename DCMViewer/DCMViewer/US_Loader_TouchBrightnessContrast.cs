@@ -38,8 +38,6 @@ namespace DCMViewer
             maxY = pictureBoxMain.Height - border;
             lbl_pictureBoxMaxX.Text = maxX.ToString();
             lbl_pictureBoxMaxY.Text = maxY.ToString();
-
-
         }
 
         private void US_Loader_TouchBrightnessContrast_Shown(object sender, EventArgs e)
@@ -58,12 +56,16 @@ namespace DCMViewer
             shownBitmap = new Bitmap[howManyPics];
             pictureFrames = new PictureFrame[howManyPics];
 
-            // Process pics
-            progressBar1.Visible = true; // aestethic detail.
-            lbl_loading.Visible = true; // aestethic detail.
 
-            flowLayoutPanel1.SuspendLayout();
-            flowLayoutPanel1.Visible = false;
+
+            // Aestethic details for loading pics
+            progressBar1.Visible = true; 
+            lbl_loading.Visible = true;
+
+            flowLayoutPanel1.SuspendLayout(); // super important to make loading fast!
+            flowLayoutPanel1.Visible = false; // aestethic detail.
+            
+            // Process pics
             for (int i = 0; i < howManyPics; ++i)
             {
                 // Load pictures in RAM.
@@ -241,11 +243,17 @@ namespace DCMViewer
 
         private void pictureBoxMain_Resize(object sender, EventArgs e)
         {
+            // Setting max values for touch panel to control brightness and contrast.
+            // border is to compensate control's border size.
             maxX = ((PictureBox)sender).Width - border;
             maxY = ((PictureBox)sender).Height - border;
 
             lbl_pictureBoxMaxX.Text = maxX.ToString();
             lbl_pictureBoxMaxY.Text = maxX.ToString();
+
+            // Aestethic details: centering Loading label in the middle of the main picturebox.
+            lbl_loading.Left =  (pictureBoxMain.Width / 2 + pictureBoxMain.Location.X) - (lbl_loading.Width / 2);
+            lbl_loading.Top = (pictureBoxMain.Width / 2 + pictureBoxMain.Location.X) - (lbl_loading.Height / 2);
         }
 
         private void button1_Click(object sender, EventArgs e)

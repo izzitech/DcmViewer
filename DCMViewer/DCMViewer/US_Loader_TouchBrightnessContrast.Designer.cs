@@ -428,17 +428,14 @@
             // 
             // lbl_loading
             // 
-            this.lbl_loading.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbl_loading.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_loading.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lbl_loading.AutoSize = true;
             this.lbl_loading.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_loading.Location = new System.Drawing.Point(219, 188);
+            this.lbl_loading.Location = new System.Drawing.Point(267, 214);
             this.lbl_loading.Name = "lbl_loading";
-            this.lbl_loading.Size = new System.Drawing.Size(186, 77);
+            this.lbl_loading.Size = new System.Drawing.Size(128, 29);
             this.lbl_loading.TabIndex = 11;
             this.lbl_loading.Text = "Loading...";
-            this.lbl_loading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbl_loading.Visible = false;
             // 
             // groupBox3
